@@ -24,7 +24,7 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<Either<Failure, List<Post>>> getAllPosts() async {
-    if (await networkInfo.isCinnected) {
+    if (await networkInfo.isConnected) {
       try {
         final remotePosts = await remoteDataSource.getAllPosts();
         localDataSource.cachePosts(remotePosts);
@@ -70,10 +70,10 @@ class PostRepositoryImpl implements PostRepository {
 
   Future<Either<Failure, Unit>> _getMessige(
       DeleteOrUpdateOrAddPost deleteOrUpdateOrAddPost) async {
-    if (await networkInfo.isCinnected) {
+    if (await networkInfo.isConnected) {
       try {
         await deleteOrUpdateOrAddPost();
-        return Right(unit);
+        return const Right(unit);
       } on ServerExeption {
         return Left(ServerFailure());
       }
